@@ -14,11 +14,20 @@ function App() {
 
   const handleclick = () => {
     setsubmit(text)
-
-
     alert("done" + text)
 
+    if (text.trim() !== '') {
+
+      setsubmit([...submit,text]);
+      settext('');
+
+      
+      
+    }
+
   }
+
+  
 
   
 
@@ -40,3 +49,5 @@ function App() {
 }
 
 export default App
+
+
