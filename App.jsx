@@ -5,7 +5,7 @@ import "./App.css";
 function App() {
 
   const [text , settext] = useState('');
-  const[submit,setsubmit] = useState('')
+  const[submit,setsubmit] = useState([])
 
   const handlechange = (event) =>{
     settext(event.target.value)
@@ -40,9 +40,15 @@ function App() {
       <input type='text' value={text} onChange={handlechange}></input>
       <button onClick={handleclick}>SUBMIT</button>
     </div>
+
+    
     <div>
-      <p >{submit}</p>
+        {submit.map((value, index) => (
+          <p key={index}>{value}</p>
+        ))}
+        
     </div>
+    
     </>
 
   )
