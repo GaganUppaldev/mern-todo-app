@@ -29,6 +29,10 @@ function App() {
 
   
 
+
+
+  
+
   
 
 
@@ -43,9 +47,17 @@ function App() {
 
     
     <div>
-        {submit.map((value, index) => (
-          <p key={index}>{value}</p>
+
+      {submit.map((value, index) => (
+        <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+          <p style={{ marginRight: '10px' }}>{value}</p>
+          <button >Edit</button>
+          </div>
         ))}
+        
+    
+       
+
         
     </div>
     
@@ -55,5 +67,7 @@ function App() {
 }
 
 export default App
+
+
 
 
