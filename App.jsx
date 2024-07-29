@@ -11,7 +11,7 @@ function App() {
 
   const handleClick = () => {
     if (text.trim() !== '') {
-      setSubmit([...submit, { text: text, isEditing: false }]);
+      setSubmit([...submit, { text: text, isEditing: false, done: false }]);
       setText('');
     }
   };
@@ -51,6 +51,16 @@ function App() {
     setSubmit(newInput);
   };
 
+  const handleDone = (index) => {
+    const newInput = submit.map((input, idx) => {
+      if (idx === index) {
+        return { ...input, done: !input.done };
+      }
+      return input;
+    });
+    setSubmit(newInput);
+  };
+
   return (
     <>
       <div id="input">
@@ -68,13 +78,21 @@ function App() {
                 onChange={(e) => handleInputChange(e, index)}
               />
             ) : (
-              <p style={{ marginRight: '10px' }}>{input.text}</p>
+              <p style={{ 
+                marginRight: '600px', 
+                textDecoration: input.done ? 'line-through' : 'none' 
+              }}>
+                {input.text}
+              </p>
             )}
             <button onClick={() => input.isEditing ? handleSave(index) : editHandle(index)}>
               {input.isEditing ? 'Save' : 'Edit'}
             </button>
             <button onClick={() => handleDelete(index)} style={{ marginLeft: '10px' }}>
               Delete
+            </button>
+            <button onClick={() => handleDone(index)} style={{ marginLeft: '10px' }}>
+              {input.done ? 'Undo' : 'Done'}
             </button>
           </div>
         ))}
@@ -84,6 +102,11 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
 
 
 
