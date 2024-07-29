@@ -1,72 +1,81 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import "./App.css";
 
-
 function App() {
+  const [text, setText] = useState('');
+  const [submit, setSubmit] = useState([]);
 
-  const [text , settext] = useState('');
-  const[submit,setsubmit] = useState([])
-
-  const handlechange = (event) =>{
-    settext(event.target.value)
-
+  const handleChange = (event) => {
+    setText(event.target.value);
   };
 
-  const handleclick = () => {
-    setsubmit(text)
-    alert("done" + text)
-
+  const handleClick = () => {
     if (text.trim() !== '') {
-
-      setsubmit([...submit,text]);
-      settext('');
-
-      
-      
+      setSubmit([...submit, { text: text, isEditing: false }]);
+      setText('');
     }
+  };
 
-  }
+  const editHandle = (index) => {
+    const newInput = submit.map((input, idx) => {
+      if (idx === index) {
+        return { ...input, isEditing: !input.isEditing };
+      }
+      return input;
+    });
+    setSubmit(newInput);
+  };
 
-  
+  const handleInputChange = (e, index) => {
+    const newInput = submit.map((input, idx) => {
+      if (idx === index) {
+        return { ...input, text: e.target.value };
+      }
+      return input;
+    });
+    setSubmit(newInput);
+  };
 
-
-
-  
-
-  
-
-
-
+  const handleSave = (index) => {
+    const newInput = submit.map((input, idx) => {
+      if (idx === index) {
+        return { ...input, isEditing: false };
+      }
+      return input;
+    });
+    setSubmit(newInput);
+  };
 
   return (
     <>
-    <div id="input">
-      <input type='text' value={text} onChange={handlechange}></input>
-      <button onClick={handleclick}>SUBMIT</button>
-    </div>
+      <div id="input">
+        <input type="text" value={text} onChange={handleChange} />
+        <button onClick={handleClick}>SUBMIT</button>
+      </div>
 
-    
-    <div>
-
-      {submit.map((value, index) => (
-        <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-          <p style={{ marginRight: '10px' }}>{value}</p>
-          <button >Edit</button>
+      <div>
+        {submit.map((input, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+            {input.isEditing ? (
+              <input
+                type="text"
+                value={input.text}
+                onChange={(e) => handleInputChange(e, index)}
+              />
+            ) : (
+              <p style={{ marginRight: '10px' }}>{input.text}</p>
+            )}
+            <button onClick={() => input.isEditing ? handleSave(index) : editHandle(index)}>
+              {input.isEditing ? 'Save' : 'Edit'}
+            </button>
           </div>
         ))}
-        
-    
-       
-
-        
-    </div>
-    
+      </div>
     </>
-
-  )
+  );
 }
 
-export default App
+export default App;
 
 
 
