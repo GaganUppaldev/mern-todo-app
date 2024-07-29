@@ -46,6 +46,11 @@ function App() {
     setSubmit(newInput);
   };
 
+  const handleDelete = (index) => {
+    const newInput = submit.filter((_, idx) => idx !== index);
+    setSubmit(newInput);
+  };
+
   return (
     <>
       <div id="input">
@@ -68,6 +73,9 @@ function App() {
             <button onClick={() => input.isEditing ? handleSave(index) : editHandle(index)}>
               {input.isEditing ? 'Save' : 'Edit'}
             </button>
+            <button onClick={() => handleDelete(index)} style={{ marginLeft: '10px' }}>
+              Delete
+            </button>
           </div>
         ))}
       </div>
@@ -76,7 +84,6 @@ function App() {
 }
 
 export default App;
-
 
 
 
