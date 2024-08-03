@@ -30,3 +30,35 @@ int main(){
 }
 
 //continue is not valiad in switch case
+
+
+//perfectly added here 
+//switch case CALCAULATOR
+/*
+#include <iostream>
+using namespace std;
+int main(){
+         cout<<"Welcome to our calculator"<<endl;
+         cout<<"Enter the first number"<<endl;
+         int a;
+         cin>>a;
+         cout<<"Enter the second number"<<endl;
+         int b;
+         cin>>b;
+         char c; //don't use int here
+         cout<<"Enter operation +,-,*or / you want to perform"<<endl;
+         cin>>c;
+         switch (c){
+                  case '+': cout<<"The sum of two numbers is"<<a+b<<endl;
+                  break;
+                  case '-' : cout<<a-b<<endl;
+                  break;
+                  case '*': cout<<a*b<<endl;
+                  break;
+                  case '/': cout<<a/b<<endl;
+                  break;
+         }
+         
+         
+         
+}*/
