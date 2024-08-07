@@ -79,7 +79,7 @@ function App() {
               />
             ) : (
               <p style={{ 
-                marginRight: '600px', 
+                marginRight: '5px', 
                 textDecoration: input.done ? 'line-through' : 'none' 
               }}>
                 {input.text}
