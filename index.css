@@ -1,5 +1,6 @@
 .body {
-    background-color: black
+
+    background-color: whitesmoke
 }
 
 #navbar {
@@ -17,7 +18,13 @@
     
     height: 100vh;
     width: 97.3vw;
-    background-color: black;
+    background-image: url('https://lp-cms-production.imgix.net/features/2018/02/GettyImages-802758686-9587fec148c7.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0; 
+    height: 100vh;
 }
 
 
