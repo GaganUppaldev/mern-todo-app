@@ -9,11 +9,13 @@
     font-size: large;
     background-color: black;
     color: whitesmoke;
+    background-image: url('https://lp-cms-production.imgix.net/features/2018/02/GettyImages-802758686-9587fec148c7.jpg');
+
     
 }
 
 #part {
-    border-style: solid;
+    /*border-style: solid;*/
     
     
     height: 100vh;
@@ -25,19 +27,29 @@
     margin: 0; 
     padding: 0; 
     height: 100vh;
+    margin-top: -33px;
 }
 
 
 #subpart {
-    border-style: solid;
+    /*border-style: solid;
     
     border-width: 1px;
-    border-color: red;
+    border-color: red;*/
     height: 90vh;
     width: 50vw;
     margin-left: 20vw;
     
-    margin-top: 5vh;
-    background-color: aliceblue;
+    margin-top: 5vh; /*5vh*/
+    
+    /*background-color: aliceblue;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCZ38Zo3HN7_cSmg0KXImPzKD-5v_aDk7cw&s');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; */
+    
+    
+
 }
+
 
