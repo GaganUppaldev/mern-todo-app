@@ -63,15 +63,24 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
-            <button type="submit" onclick="press()">Sign Up</button>
-            <script>
-            function press(){
-                alert("We are processing your signup request")
-            }
-            
-            
-            </script>
+            <button type="button" onclick="press()">Sign Up</button>
         </form>
     </div>
+
+    <!-- Include Axios from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+    function press() {
+        alert("wow , sent http request to server sir");
+        axios.post('http://localhost:7000/print', { message: 'Hello, server!' })
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    </script>
 </body>
 </html>
+
