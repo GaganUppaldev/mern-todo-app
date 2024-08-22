@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import "./App.css";
 
+
+
+
 function App() {
   const [text, setText] = useState('');
   const [submit, setSubmit] = useState([]);
@@ -63,10 +66,13 @@ function App() {
 
   return (
     <>
+      
       <div id="input">
-        <input type="text" value={text} onChange={handleChange} />
-        <button onClick={handleClick}>SUBMIT</button>
+        <input  id= "Rinput"type="text"  value={text} onChange={handleChange} />
+        <button onClick={handleClick} id="but">SUBMIT</button>
       </div>
+
+     
 
       <div>
         {submit.map((input, index) => (
@@ -102,11 +108,4 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
 
