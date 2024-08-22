@@ -1,10 +1,29 @@
 #input {
-    border-style: solid;
-    border-width: 1px;
-    border-color: red;
-    width: 18vw;
-    margin-left: 15vw;
-    margin-top: 20px;
-    
+  /*border-style: solid;
+  border-width: 1px;
+  border-color: red;*/
+  width: 45vw;
+  height: 6vh;
+  margin-left: 1vw;
+  margin-top: 30px;
+
+#Rinput{
+  border-radius: 16px;
+  height: 4vh;
+  width: 35vw;
+  font-size: larger;
+
 }
+
+#but{
+  border-radius: 16px;
+  background-color: blue;
+  color:white;
+  height: 30px;
+  font-size: larger;
+
+}
+
+}
+
 
