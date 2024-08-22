@@ -32,18 +32,19 @@
 
 
 #subpart {
-    /*border-style: solid;
     
+    /*border-style: solid;
     border-width: 1px;
-    border-color: red;*/
+    border-color: rgba(255, 0, 0, 0.2); /* Red with 20% opacity */
+    border-radius: 16px;
     height: 90vh;
     width: 50vw;
     margin-left: 20vw;
     
     margin-top: 5vh; /*5vh*/
     
-    /*background-color: aliceblue;
-    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCZ38Zo3HN7_cSmg0KXImPzKD-5v_aDk7cw&s');
+    /*background-color: ;
+    background-image: url('');
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; */
