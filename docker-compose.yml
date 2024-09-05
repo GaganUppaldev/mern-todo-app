@@ -8,16 +8,5 @@ services:
     volumes:
       - mongo-data:/data/db
 
-  express-app:
-    build: .
-    container_name: express-app
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-    environment:
-      MONGO_URL: mongodb://mongo:27017/mydatabase
-
 volumes:
   mongo-data:
-
