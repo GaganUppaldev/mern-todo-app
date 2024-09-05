@@ -19,3 +19,16 @@ APP FEATERS :
 
 MY FOCUS IS TO MAKE IT PERFECT FROM EVERY EXPECT
 
+PROJECT SETUP DETAILS :
+React App 
+involve  files named -> index.html,index.css,App.jsx,App.css,signup.html
+Setup -> React app is setup on localport of device with on port number 3000
+
+Express App
+involve file -> server.js
+Setup on localpoert 7000
+
+MongoDb 
+I am using docker and mongo version 4.4 is setup on docker 
+
+#More details will be added according to changes
