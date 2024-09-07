@@ -77,17 +77,20 @@
         if (name && password) {
             axios.post('http://localhost:7000/print', { name, password })
                 .then(response => {
-                    console.log(response.data);
+                    if (response.status === 201) { // Check if response status is OK
+                        alert('Sign Up Done');
+                        window.location.href = 'index.html'; // Redirect to index.html
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    alert('Sign Up Failed. Please try again.');
                 });
         } else {
-            alert('Please fill out both fields.');
+            alert('Please fill User name and password you want ');
         }
     }
     </script>
 </body>
 </html>
-
 
