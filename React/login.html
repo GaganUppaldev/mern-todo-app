@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form</title>
+    <!-- Include Axios from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body style="
     background-image: url('https://example.com/background.jpg');
@@ -29,8 +31,8 @@
         <h2 style="margin-top: 0;">Login</h2>
         <form id="login-form">
             <div style="margin-bottom: 15px;">
-                <label for="username" style="display: block; margin-bottom: 5px;">Username:</label>
-                <input type="text" id="username" name="username" required style="
+                <label for="name" style="display: block; margin-bottom: 5px;">Name:</label>
+                <input type="text" id="name" name="name" required style="
                     width: 100%;
                     padding: 10px;
                     border: 1px solid #ccc;
@@ -63,12 +65,23 @@
 
     <script>
         function login() {
-            const username = document.getElementById('username').value;
+            const name = document.getElementById('name').value;
             const password = document.getElementById('password').value;
 
-            if (username && password) {
-                // Replace with actual login logic
-                alert('Login successful');
+            if (name && password) {
+                axios.post('http://localhost:7000/login', { name, password })
+                    .then(response => {
+                        if (response.status === 200) {
+                            alert('Login successful');
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            alert('Invalid credentials');
+                        } else {
+                            alert('Error logging in');
+                        }
+                    });
             } else {
                 alert('Please fill out both fields.');
             }
