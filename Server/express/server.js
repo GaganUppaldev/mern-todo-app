@@ -1,8 +1,6 @@
-//code for server side or you can say express
-
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors'; //very important as browsers restrict request from client side without it
+import cors from 'cors';
 import User from './models/user.js';
 
 const app = express();
@@ -28,6 +26,11 @@ app.post('/print', async (req, res) => {
   try {
     const { name, password } = req.body;
 
+    // Validate input
+    if (!name || !password) {
+      return res.status(400).json({ error: 'Name and password are required' });
+    }
+
     // Create a new user instance
     const newUser = new User({ name, password });
 
@@ -36,6 +39,7 @@ app.post('/print', async (req, res) => {
 
     res.status(201).json({ message: 'User saved successfully!' });
   } catch (error) {
+    console.error('Error saving user:', error);
     res.status(500).json({ error: 'Failed to save user' });
   }
 });
