@@ -36,7 +36,7 @@ app.post('/login', async (req, res) => {
 
     if (user) {
       // User found
-      res.status(200).json({ message: 'Login successful' });
+      res.status(200).json({ message: 'Login successful'  , name: user.name })
     } else {
       // User not found
       res.status(401).json({ error: 'Invalid credentials' });
@@ -52,4 +52,3 @@ const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
