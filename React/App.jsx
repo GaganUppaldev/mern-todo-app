@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import "./App.css";
 
 
+const token = localStorage.getItem('token'); // Retrieves the token you stored earlier
 
 
 function App() {
@@ -12,12 +14,42 @@ function App() {
     setText(event.target.value);
   };
 
-  const handleClick = () => {
+  /*const handleClick = () => {
     if (text.trim() !== '') {
       setSubmit([...submit, { text: text, isEditing: false, done: false }]);
       setText('');
     }
+  };*/
+  
+  const handleClick = async () => {
+    if (text.trim() !== '') {
+      // Add to local state first
+      setSubmit([...submit, { text: text, isEditing: false, done: false }]);
+      setText(''); // Clear input
+  
+      try {
+        // Make an Axios request to save data to the backend
+        const response = await axios.post(
+          'http://localhost:7000/save', // Replace with your endpoint URL
+          { text }, // Data to be sent
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add the JWT token to request headers
+            }
+          }
+        );
+  
+        if (response.status === 201) {
+          console.log('Task saved successfully');
+        } else {
+          console.error('Failed to save task');
+        }
+      } catch (error) {
+        console.error('Error saving task:', error);
+      }
+    }
   };
+  
 
   const editHandle = (index) => {
     const newInput = submit.map((input, idx) => {
@@ -108,4 +140,27 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
