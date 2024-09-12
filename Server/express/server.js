@@ -104,7 +104,7 @@ app.post('/save', async (req, res) => {
     }
 
     // Save the new task to the user's tasks (or create a task model if needed)
-    user.tasks.push({ text: req.body.text, isEditing: false, done: false }); //task
+    user.tasks.push({ text: req.body.text, isEditing: false, done: false }); // Assuming `tasks` is an array in the user model
     await user.save();
 
     res.status(201).json({ message: 'Task saved successfully' });
@@ -114,10 +114,37 @@ app.post('/save', async (req, res) => {
   }
 });
 
+// Route to fetch user's tasks
+app.get('/tasks', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1]; // Get token from Authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    // Find the user by the decoded userID from the token
+    const user = await User.findById(decoded.userID);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Send back the user's tasks
+    res.status(200).json(user.tasks);
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    res.status(500).json({ message: 'Failed to fetch tasks' });
+  }
+});
+
+
 
 // Start the server
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
