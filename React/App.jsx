@@ -1,44 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./App.css";
 
-
-const token = localStorage.getItem('token'); // Retrieves the token you stored earlier
-
+const token = localStorage.getItem('token'); // Retrieve the token from localStorage
 
 function App() {
   const [text, setText] = useState('');
   const [submit, setSubmit] = useState([]);
 
+  // Fetch tasks when the component mounts
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:7000/tasks', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send JWT token in headers
+          }
+        });
+
+        if (response.status === 200) {
+          setSubmit(response.data); // Set fetched tasks to state
+        }
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+
+    fetchTasks(); // Call the function to fetch tasks
+  }, []); // Empty array ensures this runs once when component mounts
+
   const handleChange = (event) => {
     setText(event.target.value);
   };
 
-  /*const handleClick = () => {
+   /*const handleClick = () => {
     if (text.trim() !== '') {
       setSubmit([...submit, { text: text, isEditing: false, done: false }]);
       setText('');
     }
   };*/
-  
+
+
   const handleClick = async () => {
     if (text.trim() !== '') {
-      // Add to local state first
       setSubmit([...submit, { text: text, isEditing: false, done: false }]);
-      setText(''); // Clear input
-  
+      setText('');
+
       try {
-        // Make an Axios request to save data to the backend
         const response = await axios.post(
-          'http://localhost:7000/save', // Replace with your endpoint URL
-          { text }, // Data to be sent
+          'http://localhost:7000/save',
+          { text },
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Add the JWT token to request headers
+              Authorization: `Bearer ${token}`,
             }
           }
         );
-  
+
         if (response.status === 201) {
           console.log('Task saved successfully');
         } else {
@@ -49,7 +67,6 @@ function App() {
       }
     }
   };
-  
 
   const editHandle = (index) => {
     const newInput = submit.map((input, idx) => {
@@ -98,13 +115,10 @@ function App() {
 
   return (
     <>
-      
       <div id="input">
-        <input  id= "Rinput"type="text"  value={text} onChange={handleChange} />
+        <input id="Rinput" type="text" value={text} onChange={handleChange} />
         <button onClick={handleClick} id="but">SUBMIT</button>
       </div>
-
-     
 
       <div>
         {submit.map((input, index) => (
@@ -140,6 +154,27 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
