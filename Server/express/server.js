@@ -84,8 +84,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-//defind route to save-task
-import mongoose from 'mongoose';
+
 
 // Define the route to save a task
 app.post('/save', async (req, res) => {
@@ -153,6 +152,53 @@ app.get('/tasks', async (req, res) => {
   }
 });
 
+// Define the edit route
+app.put('/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  const { text, done } = req.body;
+
+  try {
+    const updatedTask = await User.findOneAndUpdate(
+      { "tasks._id": id },
+      { $set: { "tasks.$.text": text, "tasks.$.done": done } },
+      { new: true }
+    );
+
+    if (updatedTask) {
+      res.status(200).json({ message: 'Task updated successfully', task: updatedTask });
+    } else {
+      res.status(404).json({ message: 'Task not found' });
+    }
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(500).json({ message: 'Failed to update task' });
+  }
+});
+
+// Define the delete route
+app.delete('/delete/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { "tasks._id": id },
+      { $pull: { tasks: { _id: id } } },
+      { new: true }
+    );
+
+    if (updatedUser) {
+      res.status(200).json({ message: 'Task deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Task not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    res.status(500).json({ message: 'Failed to delete task' });
+  }
+});
+
+
+
 
 
 // Start the server
@@ -160,6 +206,3 @@ const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-#App.jsx
-
