@@ -6,7 +6,7 @@ const token = localStorage.getItem('token'); // Retrieve the token from localSto
 
 function App() {
   const [text, setText] = useState('');
-  const [submit, setSubmit] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   // Fetch tasks when the component mounts
   useEffect(() => {
@@ -19,7 +19,7 @@ function App() {
         });
 
         if (response.status === 200) {
-          setSubmit(response.data); // Set fetched tasks to state
+          setTasks(response.data); // Set fetched tasks to state
         }
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -33,19 +33,8 @@ function App() {
     setText(event.target.value);
   };
 
-   /*const handleClick = () => {
-    if (text.trim() !== '') {
-      setSubmit([...submit, { text: text, isEditing: false, done: false }]);
-      setText('');
-    }
-  };*/
-
-
   const handleClick = async () => {
     if (text.trim() !== '') {
-      setSubmit([...submit, { text: text, isEditing: false, done: false }]);
-      setText('');
-
       try {
         const response = await axios.post(
           'http://localhost:7000/save',
@@ -58,7 +47,8 @@ function App() {
         );
 
         if (response.status === 201) {
-          console.log('Task saved successfully');
+          setTasks([...tasks, response.data.task]); // Add the newly created task
+          setText('');
         } else {
           console.error('Failed to save task');
         }
@@ -68,49 +58,101 @@ function App() {
     }
   };
 
-  const editHandle = (index) => {
-    const newInput = submit.map((input, idx) => {
+  const editHandle = (taskId, index) => {
+    const newTasks = tasks.map((task, idx) => {
       if (idx === index) {
-        return { ...input, isEditing: !input.isEditing };
+        return { ...task, isEditing: !task.isEditing };
       }
-      return input;
+      return task;
     });
-    setSubmit(newInput);
+    setTasks(newTasks);
   };
 
   const handleInputChange = (e, index) => {
-    const newInput = submit.map((input, idx) => {
+    const newTasks = tasks.map((task, idx) => {
       if (idx === index) {
-        return { ...input, text: e.target.value };
+        return { ...task, text: e.target.value };
       }
-      return input;
+      return task;
     });
-    setSubmit(newInput);
+    setTasks(newTasks);
   };
 
-  const handleSave = (index) => {
-    const newInput = submit.map((input, idx) => {
-      if (idx === index) {
-        return { ...input, isEditing: false };
+  const handleSave = async (taskId, index) => {
+    const task = tasks[index];
+    try {
+      const response = await axios.put(
+        `http://localhost:7000/edit/${taskId}`,
+        { text: task.text, done: task.done },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        const newTasks = tasks.map((task, idx) => {
+          if (idx === index) {
+            return { ...task, isEditing: false };
+          }
+          return task;
+        });
+        setTasks(newTasks);
+      } else {
+        console.error('Failed to update task');
       }
-      return input;
-    });
-    setSubmit(newInput);
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   };
 
-  const handleDelete = (index) => {
-    const newInput = submit.filter((_, idx) => idx !== index);
-    setSubmit(newInput);
+  const handleDelete = async (taskId, index) => {
+    try {
+      const response = await axios.delete(`http://localhost:7000/delete/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      if (response.status === 200) {
+        const newTasks = tasks.filter((_, idx) => idx !== index);
+        setTasks(newTasks);
+      } else {
+        console.error('Failed to delete task');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
-  const handleDone = (index) => {
-    const newInput = submit.map((input, idx) => {
-      if (idx === index) {
-        return { ...input, done: !input.done };
+  const handleDone = async (taskId, index) => {
+    const task = tasks[index];
+    try {
+      const response = await axios.put(
+        `http://localhost:7000/edit/${taskId}`,
+        { done: !task.done },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        const newTasks = tasks.map((task, idx) => {
+          if (idx === index) {
+            return { ...task, done: !task.done };
+          }
+          return task;
+        });
+        setTasks(newTasks);
+      } else {
+        console.error('Failed to update task status');
       }
-      return input;
-    });
-    setSubmit(newInput);
+    } catch (error) {
+      console.error('Error updating task status:', error);
+    }
   };
 
   return (
@@ -121,30 +163,30 @@ function App() {
       </div>
 
       <div>
-        {submit.map((input, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-            {input.isEditing ? (
+        {tasks.map((task, index) => (
+          <div key={task._id} style={{ display: 'flex', alignItems: 'center' }}>
+            {task.isEditing ? (
               <input
                 type="text"
-                value={input.text}
+                value={task.text}
                 onChange={(e) => handleInputChange(e, index)}
               />
             ) : (
               <p style={{ 
                 marginRight: '5px', 
-                textDecoration: input.done ? 'line-through' : 'none' 
+                textDecoration: task.done ? 'line-through' : 'none' 
               }}>
-                {input.text}
+                {task.text}
               </p>
             )}
-            <button onClick={() => input.isEditing ? handleSave(index) : editHandle(index)}>
-              {input.isEditing ? 'Save' : 'Edit'}
+            <button onClick={() => task.isEditing ? handleSave(task._id, index) : editHandle(task._id, index)}>
+              {task.isEditing ? 'Save' : 'Edit'}
             </button>
-            <button onClick={() => handleDelete(index)} style={{ marginLeft: '10px' }}>
+            <button onClick={() => handleDelete(task._id, index)} style={{ marginLeft: '10px' }}>
               Delete
             </button>
-            <button onClick={() => handleDone(index)} style={{ marginLeft: '10px' }}>
-              {input.done ? 'Undo' : 'Done'}
+            <button onClick={() => handleDone(task._id, index)} style={{ marginLeft: '10px' }}>
+              {task.done ? 'Undo' : 'Done'}
             </button>
           </div>
         ))}
@@ -154,7 +196,6 @@ function App() {
 }
 
 export default App;
-
 
 
 
