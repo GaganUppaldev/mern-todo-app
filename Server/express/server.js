@@ -85,6 +85,9 @@ app.post('/login', async (req, res) => {
 });
 
 //defind route to save-task
+import mongoose from 'mongoose';
+
+// Define the route to save a task
 app.post('/save', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
 
@@ -103,16 +106,25 @@ app.post('/save', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Save the new task to the user's tasks (or create a task model if needed)
-    user.tasks.push({ text: req.body.text, isEditing: false, done: false }); // Assuming `tasks` is an array in the user model
+    // Create a new task with a unique ID
+    const newTask = {
+      _id: new mongoose.Types.ObjectId(), // Unique ID
+      text: req.body.text,
+      isEditing: false,
+      done: false
+    };
+
+    // Add the new task to the user's tasks array
+    user.tasks.push(newTask);
     await user.save();
 
-    res.status(201).json({ message: 'Task saved successfully' });
+    res.status(201).json({ message: 'Task saved successfully', task: newTask });
   } catch (error) {
     console.error('Error saving task:', error);
     res.status(500).json({ message: 'Failed to save task' });
   }
 });
+
 
 // Route to fetch user's tasks
 app.get('/tasks', async (req, res) => {
@@ -148,3 +160,6 @@ const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+#App.jsx
+
