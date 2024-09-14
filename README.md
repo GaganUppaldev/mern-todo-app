@@ -31,4 +31,13 @@ Setup on localpoert 7000
 MongoDb 
 I am using docker and mongo version 4.4 is setup on docker 
 
+WHILE BUILDING :
+*Used JWT tokens to LOGIN and to perform all other CURD Operations
+*created many routes for each 
+*used unique ObjectID's that are created and managed by mongoDB which i used for editing particular task
+*Not hyper focus on Security
+
+#PROJECT IS OVER 
+I have sucessfully created a to-do webapp that can perform curd operation
+
 #More details will be added according to changes
